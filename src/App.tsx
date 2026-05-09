@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Header } from "./components/Header"
-//import { Home } from "./pages/Home" // Importă pagina de Home creată anterior
+import { Home } from "./pages/Home" // Importă pagina de Home creată anterior
 
 type PageType = 'home' | 'add' | 'archive' | 'settings';
 
@@ -15,7 +15,7 @@ function App() {
 
       <main className="p-6">
         {/* Renderăm condiționat paginile */}
-       {activeTab === 'home'}
+       {activeTab === 'home' &&<Home/>}
         
         {activeTab === 'add' && (
           <div className="max-w-4xl mx-auto text-center py-20">
