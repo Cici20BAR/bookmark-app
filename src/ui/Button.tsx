@@ -12,7 +12,7 @@ export function Button({
     isAdd=false,
     ...props
 }:ButtonProps){
-    const baseStyle="flex items-center justify-center px-4 py-4 rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed. ";
+    const baseStyle="flex items-center justify-center px-4 py-4 rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ";
     const variants={
         primary:"bg-blue-600 text-white shadow-md hover:bg-blue-300",
         ghost:"bg-transparent text-slate-400 hover:bg-slate-800/50 hover:text-slate-200",
