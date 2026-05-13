@@ -1,6 +1,5 @@
 import { useContext, createContext, useState, type ReactNode } from 'react';
 
-// 1. Am adăugat 'tags: string[]' în matriță
 export interface Bookmark {
   id: string;
   title: string;
