@@ -1,7 +1,10 @@
 import React from 'react';
 import { Search, Filter, ChevronDown } from 'lucide-react';
+import { useBookmarks } from '../context/BookmarkContext';
 
 export function Home() {
+  const{searchTerm,setSearchTerm,selectedTag,setSelectedTag,filteredBookmarks}=useBookmarks();
+  
   return (
     <div className="max-w-7xl w-full mx-auto space-y-8 py-8">
 
@@ -12,7 +15,7 @@ export function Home() {
       </div>
 
       <div className="px-4 py-2">
-        <span className="text-blue-500 font-bold">12</span>
+        <span className="text-blue-500 font-bold">{filteredBookmarks.length}</span>
         <span className="text-slate-400 ml-2">bookmarks found</span>
       </div>
 
@@ -25,6 +28,8 @@ export function Home() {
           </div>
 
           <input
+              value={searchTerm}
+              onChange={(e)=>setSearchTerm(e.target.value)}
             placeholder="search bookmark by title, url or tags"
             type="text"
             className="w-full pl-10 border-2 border-slate-600 rounded-2xl py-4 
@@ -41,6 +46,9 @@ export function Home() {
         <div className="relative w-full">
 
           <select
+          value={selectedTag}
+          onChange={(e)=>setSelectedTag(e.target.value)}
+
             className="appearance-none bg-slate-900 border border-slate-800 text-slate-300
                        pl-4 pr-10 py-3 rounded-2xl cursor-pointer
                        hover:bg-slate-800 transition-all
@@ -57,9 +65,23 @@ export function Home() {
           </div>
 
         </div>
+        
+        {/* only for testing filter and search
+        <div className="block gap-2">
+          {filteredBookmarks.map((b)=>(
+            <span key={b.id}>
+              {b.title}
+            </span>
+          )
+          )
+        }
+        */}
+
+        
+        </div>
 
       </div>
 
-    </div>
+    
   );
 }
