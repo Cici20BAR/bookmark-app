@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, Filter, ChevronDown } from 'lucide-react';
 import { useBookmarks } from '../context/BookmarkContext';
+import{BookmarkCard}from  "../components/BookmarkCard"
 
 export function Home() {
   const{searchTerm,setSearchTerm,selectedTag,setSelectedTag,filteredBookmarks}=useBookmarks();
@@ -66,16 +67,20 @@ export function Home() {
 
         </div>
         
-        {/* only for testing filter and search
-        <div className="block gap-2">
-          {filteredBookmarks.map((b)=>(
-            <span key={b.id}>
-              {b.title}
-            </span>
-          )
-          )
-        }
-        */}
+      <div className="grid grid-cols-1 gap-4">
+        {filteredBookmarks.length > 0 ? (
+          filteredBookmarks.map((bookmark) => (
+            <BookmarkCard 
+              key={bookmark.id} 
+              bookmark={bookmark} 
+            />
+          ))
+        ) : (
+          <div className="text-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+            <p className="text-slate-400">No bookmarks found matching your search.</p>
+          </div>
+        )}
+      </div>
 
         
         </div>

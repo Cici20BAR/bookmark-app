@@ -2,20 +2,25 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RootLayout } from '../components/RootLayout'; // Asigură-te că importul e corect
 import { Home } from "../pages/Home";
 import { AddBookmarkPage } from "../pages/AddBookmark";
+import{ArchivePage} from "../pages/Archive"
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />, // ACESTA este părintele care dă fundalul și Header-ul
+    element: <RootLayout />,
     children: [
       {
-        path: "/", // Când ești pe "/", randează Home în interiorul Layout-ului
+        path: "/",
         element: <Home />,
       },
       {
-        path: "/add", // Când ești pe "/add", randează AddBookmarkPage în interiorul Layout-ului
+        path: "/add", 
         element: <AddBookmarkPage />,
       },
+      {
+        path:"/archive",
+        element:<ArchivePage/>,
+      }
     ],
   },
 ]);
