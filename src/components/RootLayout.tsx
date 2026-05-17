@@ -1,11 +1,11 @@
-import { Outlet } from "react-router-dom";
-import { Header } from "./Header";
+import { Outlet } from 'react-router-dom';
+import { Header } from './Header';
 
 export function RootLayout() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200">
-      <Header /> 
-      <main className="p-6">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300 flex flex-col">
+      <Header />
+      <main className="flex-grow">
         <Outlet />
       </main>
     </div>

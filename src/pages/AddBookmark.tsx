@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useBookmarks } from '../context/BookmarkContext';
 import { Input } from '../ui/Input';
@@ -11,19 +11,43 @@ import { bookmarkSchema, type BookmarkFormData } from '../Schemas/bookmark';
 import { Button } from '../ui/Button';
 
 export function AddBookmarkPage() {
-  const { addBookmark } = useBookmarks();
+  const { addBookmark, updateBookmark, bookmarks } = useBookmarks();
   const [tags, setTags] = useState<string[]>([]);
   const navigate = useNavigate();
+  const { bookmarkId } = useParams();
+  const bookmarkToEdit = bookmarkId
+    ? bookmarks.find((bookmark) => bookmark.id === bookmarkId)
+    : undefined;
+  const isEditing = Boolean(bookmarkId);
 
   const {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<BookmarkFormData>({
     resolver: zodResolver(bookmarkSchema),
-    defaultValues: { tags: [] }
+    defaultValues: {
+      title: bookmarkToEdit?.title ?? "",
+      url: bookmarkToEdit?.url ?? "",
+      description: bookmarkToEdit?.description ?? "",
+      tags: bookmarkToEdit?.tags ?? [],
+    }
   });
+
+  useEffect(() => {
+    if (!bookmarkToEdit) return;
+
+    const initialTags = bookmarkToEdit.tags ?? [];
+    setTags(initialTags);
+    reset({
+      title: bookmarkToEdit.title,
+      url: bookmarkToEdit.url,
+      description: bookmarkToEdit.description ?? "",
+      tags: initialTags,
+    });
+  }, [bookmarkToEdit, reset]);
 
   const handleInputChange = (newTags: string[]) => {
     setTags(newTags);
@@ -31,7 +55,12 @@ export function AddBookmarkPage() {
   }
 
   const onSubmit = (data: BookmarkFormData) => {
-    addBookmark(data);
+    if (bookmarkToEdit) {
+      updateBookmark(bookmarkToEdit.id, data);
+    } else {
+      addBookmark(data);
+    }
+
     navigate('/');
   }
 
@@ -40,8 +69,11 @@ export function AddBookmarkPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-2xl mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-slate-800">Add New Bookmark</h2>
+    <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-slate-900 shadow-md dark:shadow-xl border border-transparent dark:border-slate-800 rounded-2xl mt-10 transition-all duration-300">
+      
+      <h2 className="text-2xl font-bold mb-6 text-slate-800 dark:text-slate-100">
+        {isEditing ? "Edit Bookmark" : "Add New Bookmark"}
+      </h2>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         
@@ -81,15 +113,14 @@ export function AddBookmarkPage() {
           <Button 
             type="submit" 
             isAdd={true}
-            
           >
-            Save Bookmark
+            {isEditing ? "Save Changes" : "Save Bookmark"}
           </Button>
           
           <button 
             type="button" 
             onClick={onCancel}
-            className="bg-slate-100 text-slate-700 px-6 py-2.5 rounded-2xl hover:bg-slate-200 transition-colors font-medium border border-slate-300"
+            className="bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 dark:border-slate-700 px-6 py-2.5 rounded-2xl transition-colors font-medium border text-sm"
           >
             Cancel
           </button>

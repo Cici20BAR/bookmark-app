@@ -28,7 +28,7 @@ export function Tags({ tags, setTags }: TagInputProps) {
 
   return (
     <div>
-      <label className="block text-sm text-gray-400 font-medium">Tags</label>
+      <label className="block text-sm text-slate-600 dark:text-slate-300 font-bold">Tags</label>
       
       <div className="flex flex-wrap gap-2 mb-2">
         {tags.map((tag) => (
@@ -51,9 +51,9 @@ export function Tags({ tags, setTags }: TagInputProps) {
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleInput} 
         placeholder="Type a tag and press Enter or comma" 
-        className="w-full border border-gray-300 rounded-md p-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full border border-slate-300 rounded-md p-2 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400 dark:border-slate-700"
       />
-      <p className="text-xs text-gray-500 mt-1">Apasa Enter sau virgula sa adaugi un tag</p>
+      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Apasa Enter sau virgula sa adaugi un tag</p>
     </div>
   );
 }

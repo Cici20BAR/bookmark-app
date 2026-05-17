@@ -1,11 +1,10 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { Bookmark, Home, Plus, Archive, Settings } from 'lucide-react';
 
 export function Header() {
     return (
-        <nav className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300 sticky top-0 z-50">
+        <nav className="w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
             <div className="max-w-7xl mx-auto w-full flex items-center justify-between px-6 py-4">
                 
                 <NavLink to="/" className="flex items-center gap-2 text-blue-600 dark:text-blue-400 cursor-pointer">

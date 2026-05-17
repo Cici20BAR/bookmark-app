@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, type ReactNode, useMemo } from 'react';
+import { useContext, createContext, useEffect, useState, type ReactNode, useMemo } from 'react';
 
 export interface Bookmark {
   id: string;
@@ -16,8 +16,10 @@ isArchived: boolean;
 
 interface BookmarkContextType {
   bookmarks: Bookmark[];
-  addBookmark: (dateFormular: any) => void; 
+  addBookmark: (dateFormular: BookmarkFormData) => void; 
+  updateBookmark: (id: string, dateFormular: BookmarkFormData) => void;
   deleteBookmark:(date:any)=>void;
+  deleteAllBookmarks: () => void;
   filteredBookmarks: Bookmark[]; 
   searchTerm: string;
   setSearchTerm: (val: string) => void;
@@ -33,12 +35,29 @@ setBookmarks:(data:any)=>void;
 
 }
 
+type BookmarkFormData = Pick<Bookmark, 'title' | 'url' | 'description' | 'tags'>;
+const BOOKMARKS_STORAGE_KEY = "bookmarks";
+
 const BookmarkContext = createContext<BookmarkContextType | null>(null);
 
 export function BookmarkProvider({ children }: { children: ReactNode }) {
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => {
+    const savedBookmarks = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+
+    if (!savedBookmarks) return [];
+
+    try {
+      return JSON.parse(savedBookmarks) as Bookmark[];
+    } catch {
+      return [];
+    }
+  });
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTag, setSelectedTag] = useState("all");
+
+  useEffect(() => {
+    localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(bookmarks));
+  }, [bookmarks]);
 
 const archivedBookmarks = useMemo(() => {
     return bookmarks.filter(b => b.isArchived);
@@ -66,13 +85,12 @@ const archivedBookmarks = useMemo(() => {
   });
 
 }, [bookmarks, searchTerm, selectedTag]);
-  const addBookmark = (dateFormular: Omit<Bookmark,'id'|'isPinned'|'createdAt'|'viewCount'|'tags'|'isArchived'>) => {
+  const addBookmark = (dateFormular: BookmarkFormData) => {
     const bookmarkNou = {
       id: crypto.randomUUID(), 
       isPinned:false,
       createdAt:new Date().toISOString(),
       viewCount:0,
-      tags:[],
       isArchived:false,
       ...dateFormular, 
       
@@ -80,9 +98,21 @@ const archivedBookmarks = useMemo(() => {
     
     setBookmarks((listaVeche) => [bookmarkNou, ...listaVeche]);
   };
+
+  const updateBookmark = (id: string, dateFormular: BookmarkFormData) => {
+    setBookmarks((listaVeche) =>
+      listaVeche.map((bookmark) =>
+        bookmark.id === id ? { ...bookmark, ...dateFormular } : bookmark
+      )
+    );
+  };
   const deleteBookmark=(iddesters:string)=>{
       setBookmarks((listaveche)=>listaveche.filter(b=>b.id!=iddesters))
   }
+  const deleteAllBookmarks = () => {
+    setBookmarks([]);
+    localStorage.removeItem(BOOKMARKS_STORAGE_KEY);
+  };
   const togglePin = (id: string) => {
   setBookmarks((listaVeche) =>
     listaVeche.map((b) =>
@@ -107,7 +137,7 @@ const trackVisit = (id: string) => {
 
 
   return (
-    <BookmarkContext.Provider value={{ bookmarks, setBookmarks,addBookmark, archivedBookmarks,selectedTag,toggleArchive,setSelectedTag,searchTerm,setSearchTerm,filteredBookmarks,trackVisit,deleteBookmark,togglePin}}>
+    <BookmarkContext.Provider value={{ bookmarks, setBookmarks,addBookmark, updateBookmark, archivedBookmarks,selectedTag,toggleArchive,setSelectedTag,searchTerm,setSearchTerm,filteredBookmarks,trackVisit,deleteBookmark,deleteAllBookmarks,togglePin}}>
       {children}
     </BookmarkContext.Provider>
   );
