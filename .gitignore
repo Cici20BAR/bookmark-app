@@ -1,29 +1,21 @@
-# Biblioteci instalate (Cea mai importantă regulă!)
-# Nu urcăm niciodată node_modules pentru că e uriaș. 
-# Ceilalți îl descarcă singuri cu "npm install".
+
 node_modules/
 
-# Rezultatul build-ului (codul comprimat pentru producție)
 dist/
 dist-ssr/
 *.local
 
-# Fișiere de log-uri (erori de la npm)
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Secrete și variabile de mediu
-# Aici pui parole, chei de API, etc.
 .env
 .env.local
 .env.*.local
 
-# Fișiere specifice sistemului de operare
 .DS_Store
 Thumbs.db
 
-# Setări de editor (opțional, dar recomandat)
 .vscode/
 .idea/
 *.suo

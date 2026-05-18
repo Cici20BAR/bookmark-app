@@ -79,9 +79,14 @@ const archivedBookmarks = useMemo(() => {
     return matchesSearch && matchesTag;
   });
 
+
   return [...filtered].sort((a, b) => {
-    if (a.isPinned === b.isPinned) return 0;
+    if (a.isPinned !== b.isPinned){
     return a.isPinned ? -1 : 1;
+    }
+
+
+    return b.viewCount-a.viewCount
   });
 
 }, [bookmarks, searchTerm, selectedTag]);
