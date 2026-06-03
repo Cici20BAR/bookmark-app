@@ -86,7 +86,7 @@ export function AddBookmarkPage() {
         
         <Input
           label="URL"
-          placeholder="Introdu un URL"
+          placeholder="Introdu un URL (de exemplu example.com)"
           error={errors.url?.message}
           {...register("url")}
         />

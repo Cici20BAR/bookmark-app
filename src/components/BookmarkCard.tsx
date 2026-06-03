@@ -50,7 +50,20 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-slate-800 dark:text-slate-100 text-lg truncate">{bookmark.title}</h3>
           <p className="text-blue-500 dark:text-blue-400 text-sm truncate">{bookmark.url}</p>
-          
+
+          {bookmark.tags?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {bookmark.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded-full border border-slate-200 dark:border-slate-700"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-[12px] text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-1">
               <Eye size={14} className="text-slate-400 dark:text-slate-500" />
